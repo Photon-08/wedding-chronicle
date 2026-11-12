@@ -1,0 +1,865 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f8f1e6">
+
+<title>Our Moments — Photo Memories</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --paper: #f8f1e6;
+    --paper-deep: #efe2cf;
+    --ink: #38251f;
+    --muted: #79665a;
+    --red: #9e302d;
+    --red-dark: #722320;
+    --gold: #b58a50;
+    --line: rgba(87, 52, 39, .2);
+
+    --serif: "Playfair Display", Georgia, serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --bengali: "Tiro Bangla", Georgia, serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: var(--sans);
+    line-height: 1.65;
+
+    background-image:
+        radial-gradient(rgba(103,70,45,.08) .7px, transparent .7px);
+    background-size: 8px 8px;
+}
+
+button {
+    font-family: inherit;
+}
+
+.wrap {
+    width: min(1050px, calc(100% - 36px));
+    margin: auto;
+}
+
+/* Navigation */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.brand {
+    color: var(--red);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.nav-label {
+    color: var(--muted);
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+/* Hero */
+
+.hero {
+    min-height: 310px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 65px 15px 45px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border: 1px solid rgba(158,48,45,.2);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero::before {
+    left: -125px;
+    top: 10%;
+    box-shadow:
+        0 0 0 15px rgba(158,48,45,.035),
+        0 0 0 30px rgba(158,48,45,.025);
+}
+
+.hero::after {
+    right: -125px;
+    bottom: 0;
+    box-shadow:
+        0 0 0 15px rgba(158,48,45,.035),
+        0 0 0 30px rgba(158,48,45,.025);
+}
+
+.eyebrow {
+    color: var(--red);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+}
+
+.bengali {
+    font-family: var(--bengali);
+    color: var(--red);
+}
+
+.hero .bengali {
+    font-size: 1.8rem;
+    margin: 0 0 12px;
+}
+
+h1, h2, h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.hero h1 {
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    margin: 10px 0;
+    letter-spacing: -.04em;
+}
+
+.hero-sub {
+    max-width: 530px;
+    color: var(--muted);
+    margin: 15px auto 0;
+    font-size: .94rem;
+}
+
+.ornament {
+    color: var(--gold);
+    letter-spacing: .6em;
+    margin: 18px 0;
+}
+
+/* Main workspace */
+
+.workspace {
+    padding: 30px 0 85px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.section-heading h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin: 10px 0;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: .9rem;
+    margin: 0;
+}
+
+/* Main panel */
+
+.classifier {
+    max-width: 790px;
+    margin: auto;
+    padding: clamp(20px, 5vw, 42px);
+    border: 1px solid var(--gold);
+    background: rgba(255,255,255,.24);
+    position: relative;
+}
+
+.classifier::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid rgba(158,48,45,.13);
+    pointer-events: none;
+}
+
+.panel-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Upload area */
+
+.upload-area {
+    border: 1px dashed rgba(158,48,45,.5);
+    background: rgba(248,241,230,.75);
+    min-height: 210px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 30px 15px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    background: var(--paper-deep);
+    border-color: var(--red);
+}
+
+.upload-symbol {
+    width: 58px;
+    height: 58px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 15px;
+    color: var(--red);
+    font: 2rem var(--serif);
+}
+
+.upload-area h3 {
+    font-size: 1.35rem;
+    margin: 0 0 5px;
+}
+
+.upload-area p {
+    color: var(--muted);
+    font-size: .78rem;
+    margin: 3px 0;
+}
+
+#fileInput {
+    display: none;
+}
+
+/* Image preview */
+
+.preview-container {
+    display: none;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.preview-frame {
+    display: inline-block;
+    padding: 9px;
+    background: var(--paper);
+    border: 1px solid var(--gold);
+    max-width: 100%;
+}
+
+#preview {
+    display: block;
+    max-width: 100%;
+    max-height: 340px;
+    object-fit: contain;
+}
+
+.file-name {
+    color: var(--muted);
+    font-size: .75rem;
+    margin-top: 10px;
+    overflow-wrap: anywhere;
+}
+
+/* Buttons */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--red);
+    color: #fff8ef;
+    border: 1px solid var(--red);
+    padding: 13px 22px;
+    font: 600 .83rem var(--sans);
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn:hover {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+}
+
+.btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.predict-action {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+#predictBtn {
+    min-width: 230px;
+}
+
+#status {
+    text-align: center;
+    color: var(--muted);
+    font-size: .8rem;
+    margin-top: 15px;
+    min-height: 22px;
+}
+
+/* Decorative divider */
+
+.alpana-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    color: var(--red);
+    max-width: 250px;
+    margin: 30px auto;
+}
+
+.alpana-divider i {
+    height: 1px;
+    flex: 1;
+    background: var(--gold);
+}
+
+/* Prediction result */
+
+#result {
+    display: none;
+    margin-top: 35px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    background: rgba(239,226,207,.48);
+}
+
+.result-heading {
+    color: var(--red);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .17em;
+    text-transform: uppercase;
+}
+
+.prediction {
+    font: 500 clamp(2rem, 5vw, 3rem) var(--serif);
+    color: var(--red-dark);
+    margin: 8px 0;
+}
+
+.confidence {
+    color: var(--muted);
+    font-size: .82rem;
+}
+
+.probabilities {
+    margin-top: 28px;
+}
+
+.probability-row {
+    margin-top: 16px;
+}
+
+.probability-label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink);
+    font-size: .8rem;
+    margin-bottom: 7px;
+}
+
+.bar {
+    height: 6px;
+    background: rgba(87,52,39,.12);
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: var(--red);
+    transition: width .5s ease;
+}
+
+/* Footer */
+
+.footer {
+    border-top: 1px solid var(--line);
+    padding: 25px 0 35px;
+    text-align: center;
+    color: var(--muted);
+    font-size: .75rem;
+}
+
+.footer strong {
+    display: block;
+    color: var(--red);
+    font: 500 1.2rem var(--serif);
+    margin-bottom: 5px;
+}
+
+@media(max-width: 600px) {
+    .topbar {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .nav-label {
+        font-size: .62rem;
+    }
+
+    .hero {
+        min-height: 280px;
+    }
+
+    .classifier {
+        padding: 20px;
+    }
+
+    #result {
+        padding: 20px;
+    }
+}
+
+
+/* Grad-CAM explanation */
+
+.gradcam-section {
+    margin-top: 32px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
+}
+
+.gradcam-intro {
+    color: var(--muted);
+    font-size: .82rem;
+    margin: 8px 0 18px;
+    line-height: 1.6;
+}
+
+.gradcam-frame {
+    max-width: 560px;
+    margin: 18px auto 0;
+    padding: 8px;
+    background: var(--paper);
+    border: 1px solid var(--gold);
+}
+
+#gradcamImage {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.gradcam-legend {
+    max-width: 340px;
+    margin: 14px auto 0;
+}
+
+.gradcam-gradient {
+    height: 9px;
+    border-radius: 20px;
+    background: linear-gradient(
+        to right,
+        #313695,
+        #74add1,
+        #ffffbf,
+        #f46d43,
+        #a50026
+    );
+}
+
+.gradcam-legend-labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: .7rem;
+}
+
+.gradcam-note {
+    max-width: 560px;
+    margin: 14px auto 0;
+    color: var(--muted);
+    font-size: .72rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="wrap topbar">
+    <a href="#" class="brand">শুভ বিবাহ · Our Moments</a>
+    <span class="nav-label">A collection of memories</span>
+</header>
+
+<main>
+
+    <section class="hero wrap">
+        <div>
+            <p class="bengali">স্মৃতির অ্যালবাম</p>
+
+            <div class="eyebrow">
+                Every photograph has a story
+            </div>
+
+            <h1>Our Moments</h1>
+
+            <div class="ornament">— ✳ — ✳ —</div>
+
+            <p class="hero-sub">
+                A little space for all the memories, faces and
+                moments that make our story special.
+                Upload a photograph and let our model find its place.
+            </p>
+        </div>
+    </section>
+
+
+    <section class="workspace wrap">
+
+        <div class="section-heading">
+            <div class="eyebrow">A little help from AI</div>
+            <h2>Where does this memory belong?</h2>
+            <p>
+                Choose a photograph to discover who is in it.
+            </p>
+        </div>
+
+        <div class="classifier">
+
+            <div class="panel-content">
+
+                <div class="upload-area" id="dropArea">
+
+                    <div>
+                        <div class="upload-symbol">+</div>
+
+                        <h3>Choose a photograph</h3>
+
+                        <p>
+                            Drag and drop your image here,
+                            or click to browse.
+                        </p>
+
+                        <p>JPG · PNG · WEBP</p>
+                    </div>
+
+                </div>
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+                <div class="preview-container" id="previewContainer">
+
+                    <div class="preview-frame">
+                        <img id="preview" alt="Selected photograph">
+                    </div>
+
+                    <p class="file-name" id="fileName"></p>
+
+                </div>
+
+                <div class="predict-action">
+                    <button class="btn" id="predictBtn" disabled>
+                        Analyse photograph ↗
+                    </button>
+                </div>
+
+                <p id="status" role="status" aria-live="polite"></p>
+
+
+                <div id="result">
+
+                    <div class="eyebrow">
+                        A little discovery
+                    </div>
+
+                    <div class="alpana-divider">
+                        <span>✳</span><i></i><span>❋</span><i></i><span>✳</span>
+                    </div>
+
+                    <p class="result-heading">
+                        Our model thinks this photograph belongs to
+                    </p>
+
+                    <div class="prediction" id="prediction"></div>
+
+                    <p class="confidence" id="confidence"></p>
+
+                    <div class="probabilities">
+
+                        <p class="result-heading">
+                            What the model sees
+                        </p>
+
+                        <div id="probabilityList"></div>
+
+                    <div class="gradcam-section" id="gradcamSection" style="display: none;">
+                        <p class="result-heading">Model attention · Grad-CAM</p>
+                        <h3 style="font-size: 1.45rem; margin: 8px 0 0;">
+                            Where did the model look?
+                        </h3>
+                        <p class="gradcam-intro">
+                            This heatmap highlights image regions that positively
+                            contributed to the predicted class.
+                        </p>
+
+                        <div class="gradcam-frame">
+                            <img id="gradcamImage" alt="Grad-CAM heatmap overlay">
+                        </div>
+
+                        <div class="gradcam-legend">
+                            <div class="gradcam-gradient"></div>
+                            <div class="gradcam-legend-labels">
+                                <span>Lower contribution</span>
+                                <span>Higher contribution</span>
+                            </div>
+                        </div>
+
+                        <p class="gradcam-note">
+                            Grad-CAM is an approximate visualization of the model's
+                            class-specific evidence. It does not prove that the model
+                            has recognized a person's identity.
+                        </p>
+                    </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    <div class="wrap">
+        <strong>Indranil & Shaibalini</strong>
+        Made with love, a little alpana, and a lot of memories.
+    </div>
+</footer>
+
+
+<script>
+
+const fileInput = document.getElementById("fileInput");
+const dropArea = document.getElementById("dropArea");
+const preview = document.getElementById("preview");
+const previewContainer = document.getElementById("previewContainer");
+const predictBtn = document.getElementById("predictBtn");
+const result = document.getElementById("result");
+const status = document.getElementById("status");
+const gradcamSection = document.getElementById("gradcamSection");
+const gradcamImage = document.getElementById("gradcamImage");
+
+let selectedFile = null;
+let previewURL = null;
+
+
+// File picker
+
+dropArea.addEventListener("click", () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener("change", (event) => {
+    handleFile(event.target.files[0]);
+});
+
+
+// Drag and drop
+
+dropArea.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    dropArea.classList.add("dragover");
+});
+
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("dragover");
+});
+
+dropArea.addEventListener("drop", (event) => {
+    event.preventDefault();
+    dropArea.classList.remove("dragover");
+
+    handleFile(event.dataTransfer.files[0]);
+});
+
+
+// Image preview
+
+function handleFile(file) {
+
+    if (!file) return;
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+        status.textContent = "Please select a JPG, PNG or WEBP image.";
+        return;
+    }
+
+    if (previewURL) {
+        URL.revokeObjectURL(previewURL);
+    }
+
+    selectedFile = file;
+    previewURL = URL.createObjectURL(file);
+
+    preview.src = previewURL;
+
+    previewContainer.style.display = "block";
+
+    document.getElementById("fileName").textContent = file.name;
+
+    predictBtn.disabled = false;
+
+    result.style.display = "none";
+    gradcamSection.style.display = "none";
+    gradcamImage.removeAttribute("src");
+    status.textContent = "";
+}
+
+
+// Prediction request
+
+predictBtn.addEventListener("click", async () => {
+
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    predictBtn.disabled = true;
+    predictBtn.textContent = "Finding your memory...";
+
+    status.textContent = "Analysing photograph...";
+    result.style.display = "none";
+
+    try {
+
+        const response = await fetch("/predict", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.detail || "Prediction failed.");
+        }
+
+        document.getElementById("prediction").textContent =
+            data.predicted_class;
+
+        document.getElementById("confidence").textContent =
+            `Model confidence: ${data.confidence}%`;
+
+        const probabilityList =
+            document.getElementById("probabilityList");
+
+        probabilityList.replaceChildren();
+
+        for (const [label, probability] of
+            Object.entries(data.probabilities)) {
+
+            const row = document.createElement("div");
+            row.className = "probability-row";
+
+            const labelRow = document.createElement("div");
+            labelRow.className = "probability-label";
+
+            const name = document.createElement("span");
+            name.textContent = label;
+
+            const value = document.createElement("span");
+            value.textContent = `${probability}%`;
+
+            labelRow.append(name, value);
+
+            const bar = document.createElement("div");
+            bar.className = "bar";
+
+            const fill = document.createElement("div");
+            fill.className = "bar-fill";
+            fill.style.width = `${probability}%`;
+
+            bar.appendChild(fill);
+            row.append(labelRow, bar);
+
+            probabilityList.appendChild(row);
+        }
+
+        if (data.gradcam) {
+            gradcamImage.src = data.gradcam;
+            gradcamSection.style.display = "block";
+        } else {
+            gradcamSection.style.display = "none";
+        }
+
+        result.style.display = "block";
+        status.textContent = "";
+
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+
+    } catch (error) {
+
+        status.textContent = error.message;
+
+    } finally {
+
+        predictBtn.disabled = false;
+        predictBtn.textContent = "Analyse photograph ↗";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
